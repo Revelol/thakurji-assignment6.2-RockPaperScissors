@@ -1,15 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 
 public class RockPaperScissorsFrame extends JFrame implements Strategy {
     JPanel main, top, result, stats;
-    JLabel lUserWins, lComputerWins, lDraws;
-    JButton rockBtn, paperBtn, scissorsBtn, quitBtn;
+    JLabel lUserWins, lComputerWins, lDraws, lComputerMove;
+    GameButton rockBtn, paperBtn, scissorsBtn;
+    JButton quitBtn;
     JTextArea results;
     JScrollPane scrollPane;
     int iUserWins, iComputerWins, iDraws, playerChoice, computerChoice;
@@ -48,7 +48,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         top = new JPanel();
         //rock button
-        rockBtn = new JButton();
+        rockBtn = new GameButton(0, "Rock");
         ImageIcon temp = new ImageIcon(this.getClass().getResource("rocksign.jpg"));
         ImageIcon rocksign = new ImageIcon(temp.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         rockBtn.setIcon(rocksign);
@@ -60,7 +60,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         top.add(rockBtn);
         //paper button
-        paperBtn = new JButton();
+        paperBtn = new GameButton(1,"Paper");
         ImageIcon temp1 = new ImageIcon(this.getClass().getResource("handsign.jpg"));
         ImageIcon handsign = new ImageIcon(temp1.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         paperBtn.setIcon(handsign);
@@ -72,7 +72,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         top.add(paperBtn);
         //scissors  button
-        scissorsBtn = new JButton();
+        scissorsBtn = new GameButton(2,"Scissors");
         ImageIcon temp2 = new ImageIcon(this.getClass().getResource("scissorssign.jpg"));
         ImageIcon scissorssign = new ImageIcon(temp2.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         scissorsBtn.setIcon(scissorssign);
@@ -83,6 +83,13 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
         });
 
         top.add(scissorsBtn);
+        quitBtn = new JButton("Quit");
+        quitBtn.addActionListener((ActionEvent ae) -> {
+            System.exit(0);
+        });
+        quitBtn.setFont(new Font("Arial", Font.PLAIN, 14));
+        quitBtn.setForeground(Color.red);
+        top.add(quitBtn);
 
     }
     private void createResultsPanel()
@@ -92,7 +99,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
     }
     private void createStatsPanel(){
         stats = new JPanel();
-        stats.setLayout(new GridLayout(2,3));
+        stats.setLayout(new GridLayout(3,3));
         JLabel userWin = new JLabel("User Wins");
         stats.add(userWin);
         JLabel comprWin = new JLabel("Computer Wins");
@@ -105,6 +112,10 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
         stats.add(lComputerWins);
         lDraws = new JLabel(""+iDraws);
         stats.add(lDraws);
+        JLabel label =  new JLabel("Computer's Move: ");
+        stats.add(label);
+        lComputerMove = new JLabel();
+        stats.add(lComputerMove);
     }
     public void determineMove(){
         determineComputerMove();
@@ -119,11 +130,43 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
     private void determineResult(){
         if(playerChoice == computerChoice){
             iDraws++;
-            results.append("It is a Tie");
+            results.append("It is a Tie\n");
+            lDraws.setText(""+iDraws);
         }
-        else if((playerChoice==0 && computerChoice==2) || (playerChoice==1 && computerChoice==0) || (playerChoice ==2 && computerChoice == 1)){
+        else if (playerChoice==0 && computerChoice==2) {
             iUserWins++;
+            results.append("Rock breaks scissors (Player wins)\n");
+            lUserWins.setText(""+iUserWins);
+        } else if (playerChoice==1 && computerChoice==0) {
+            iUserWins++;
+            results.append("Paper covers rock (Player wins)\n");
+            lUserWins.setText(""+iUserWins);
+        } else if (playerChoice ==2 && computerChoice == 1) {
+            iUserWins++;
+            results.append("Scissors cuts paper (Player wins)\n");
+            lUserWins.setText(""+iUserWins);
+        } else if (playerChoice==2 && computerChoice==0) {
+            iComputerWins++;
+            results.append("Rock breaks scissors (Computer wins)\n");
+            lComputerWins.setText(""+iComputerWins);
+        } else if (playerChoice==0 && computerChoice==1) {
+            iComputerWins++;
+            results.append("Paper covers rock (Computer wins)\n");
+            lComputerWins.setText(""+iComputerWins);
+        } else if (playerChoice ==1 && computerChoice == 2) {
+            iComputerWins++;
+            results.append("Scissors cuts paper (Computer wins)\n");
+            lComputerWins.setText(""+iComputerWins);
+        }
+    }
 
+    private void getComputerMoveInText() {
+        if (computerChoice ==0){
+            lComputerMove.setText("Rock");
+        }else if(computerChoice ==1){
+            lComputerMove.setText("Paper");
+        }else{
+            lComputerMove.setText("Scissors");
         }
     }
 }

@@ -1,17 +1,19 @@
-public class GameButton {
-    private int ID;
+import javax.swing.*;
+
+public class GameButton extends JButton {
+    private int id;
     private String name;
-    public GameButton(int ID, String name){
-        this.ID = ID;
+    public GameButton(int Id, String name){
+        this.id = Id;
         this.name = name;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
