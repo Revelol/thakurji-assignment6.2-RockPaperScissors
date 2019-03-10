@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 
-public class RockPaperScissorsFrame {
+public class RockPaperScissorsFrame extends JFrame {
     JPanel main, top, result, stats;
     JLabel lUserWins, lComputerWins, lDraws;
     JButton rockBtn, paperBtn, scissorsBtn, quitBtn;
@@ -16,7 +16,7 @@ public class RockPaperScissorsFrame {
 
     public RockPaperScissorsFrame()
     {
-        super("Fortune Teller");
+        super("Rock Paper Scissors Game");
         // configure the GUI
         main = new JPanel();
 
@@ -28,12 +28,12 @@ public class RockPaperScissorsFrame {
         main.setLayout(new BorderLayout());
         main.add(top,BorderLayout.NORTH);
         main.add(scrollPane,BorderLayout.CENTER);
-        main.add(bottom,BorderLayout.SOUTH);
+        main.add(stats,BorderLayout.SOUTH);
 
         // And add Main to the JFrame
         add(main);
 
-        generateFortune();
+
         setSize(400, 400);
         //frame.pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,14 +49,21 @@ public class RockPaperScissorsFrame {
         //rock button
         rockBtn = new JButton();
         ImageIcon temp = new ImageIcon(this.getClass().getResource("rocksign.jpg"));
-        ImageIcon rocksign = new ImageIcon(temp.getImage().getScaledInstance(100,100,Image.SCALE_SMOOTH));
-
-
+        ImageIcon rocksign = new ImageIcon(temp.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
         rockBtn.setIcon(rocksign);
-        rockBtn.setText("Rock!");
-        rockBtn.setFont(new Font("Helvetica", Font.PLAIN, 36));
-        rockBtn.setForeground(Color.orange);
         top.add(rockBtn);
+        //paper button
+        paperBtn = new JButton();
+        ImageIcon temp1 = new ImageIcon(this.getClass().getResource("handsign.jpg"));
+        ImageIcon handsign = new ImageIcon(temp1.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
+        paperBtn.setIcon(handsign);
+        top.add(paperBtn);
+        //scissors  button
+        scissorsBtn = new JButton();
+        ImageIcon temp2 = new ImageIcon(this.getClass().getResource("scissorssign.jpg"));
+        ImageIcon scissorssign = new ImageIcon(temp2.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH));
+        scissorsBtn.setIcon(scissorssign);
+        top.add(scissorsBtn);
 
     }
     private void createResultsPanel()
@@ -79,10 +86,6 @@ public class RockPaperScissorsFrame {
         stats.add(lComputerWins);
         lDraws = new JLabel(""+iDraws);
         stats.add(lDraws);
-
-
-
-
     }
 
 }
