@@ -12,7 +12,8 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
     JButton quitBtn;
     JTextArea results;
     JScrollPane scrollPane;
-    int iUserWins, iComputerWins, iDraws, playerChoice, computerChoice;
+    int iUserWins, iComputerWins, iDraws, playerChoice, computerChoice, rCnt, pCnt, sCnt,ilastUsed, gameCnt, cheatCnt;
+    String strategy;
 
 
     public RockPaperScissorsFrame()
@@ -55,6 +56,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         rockBtn.addActionListener((ActionEvent ae) -> {
             playerChoice = 0;
+            rCnt;
             determineMove();
         });
 
@@ -67,6 +69,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         paperBtn.addActionListener((ActionEvent ae) -> {
             playerChoice =1;
+            pCnt++;
             determineMove();
         });
 
@@ -79,6 +82,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
         scissorsBtn.addActionListener((ActionEvent ae) -> {
             playerChoice =2;
+            sCnt++;
             determineMove();
         });
 
@@ -118,13 +122,68 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
         stats.add(lComputerMove);
     }
     public void determineMove(){
+        determineStrategy();
         determineComputerMove();
         determineResult();
+        getComputerMoveInText();
+    }
+    private void determineStrategy(){
+        String [] strategies= {"Least Used", "Most Used", "Last Used", "Random", "Cheat"};
+        Random random = new Random();
+        int i = random.nextInt(strategies.length);
+        strategy = strategies[i];
     }
 
     private void determineComputerMove() {
+        if (strategy.equals("Random")) {
+            determineRandomMove();
+        } else if (strategy.equals("Least Used")) {
+            determineLeastUsed();
+        } else if (strategy.equals("Most Used")) {
+            determineMostUsed();
+        } else if (strategy.equals("Last Used")) {
+            determineLastUsed();
+        } else if (strategy.equals("Cheat")) {
+            determineCheat();
+            cheatCnt++;
+        }
+
+    }
+    private void determineRandomMove(){
         Random r = new Random();
         computerChoice = r.nextInt(3);
+    }
+    private void determineLeastUsed(){
+        if(rCnt < pCnt && rCnt < sCnt){
+            computerChoice = 1;
+        }else if(pCnt < rCnt && pCnt < sCnt){
+            computerChoice = 2;
+        }else{
+            computerChoice=0;
+        }
+
+    }
+    private void determineMostUsed(){
+        if(rCnt > pCnt && rCnt > sCnt){
+            computerChoice = 1;
+        }else if(pCnt > rCnt && pCnt > sCnt){
+            computerChoice = 2;
+        }else{
+            computerChoice=0;
+        }
+
+    }
+    private void determineLastUsed(){
+        computerChoice = ilastUsed;
+    }
+    private void determineCheat(){
+        if(playerChoice == 0){
+            computerChoice = 1;
+        }else if(playerChoice == 1){
+            computerChoice = 2;
+        }else{
+            computerChoice = 0;
+        }
 
     }
     private void determineResult(){
@@ -135,29 +194,31 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
         }
         else if (playerChoice==0 && computerChoice==2) {
             iUserWins++;
-            results.append("Rock breaks scissors (Player wins)\n");
+            results.append("Rock breaks scissors (Player wins " +strategy+")\n" );
             lUserWins.setText(""+iUserWins);
         } else if (playerChoice==1 && computerChoice==0) {
             iUserWins++;
-            results.append("Paper covers rock (Player wins)\n");
+            results.append("Paper covers rock (Player wins" +strategy+")\n");
             lUserWins.setText(""+iUserWins);
         } else if (playerChoice ==2 && computerChoice == 1) {
             iUserWins++;
-            results.append("Scissors cuts paper (Player wins)\n");
+            results.append("Scissors cuts paper (Player wins " +strategy+")\n");
             lUserWins.setText(""+iUserWins);
         } else if (playerChoice==2 && computerChoice==0) {
             iComputerWins++;
-            results.append("Rock breaks scissors (Computer wins)\n");
+            results.append("Rock breaks scissors (Computer wins" +strategy+")\n");
             lComputerWins.setText(""+iComputerWins);
         } else if (playerChoice==0 && computerChoice==1) {
             iComputerWins++;
-            results.append("Paper covers rock (Computer wins)\n");
+            results.append("Paper covers rock (Computer wins" +strategy+")\n");
             lComputerWins.setText(""+iComputerWins);
         } else if (playerChoice ==1 && computerChoice == 2) {
             iComputerWins++;
-            results.append("Scissors cuts paper (Computer wins)\n");
+            results.append("Scissors cuts paper (Computer wins" +strategy+")\n");
             lComputerWins.setText(""+iComputerWins);
         }
+        ilastUsed = playerChoice;
+        gameCnt++;
     }
 
     private void getComputerMoveInText() {
