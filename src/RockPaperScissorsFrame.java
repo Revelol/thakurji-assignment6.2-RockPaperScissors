@@ -88,7 +88,7 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
     private void createResultsPanel()
     {
         results = new JTextArea();
-        this.scrollPane = new JScrollPane(results);
+        scrollPane = new JScrollPane(results);
     }
     private void createStatsPanel(){
         stats = new JPanel();
@@ -117,6 +117,13 @@ public class RockPaperScissorsFrame extends JFrame implements Strategy {
 
     }
     private void determineResult(){
-        
+        if(playerChoice == computerChoice){
+            iDraws++;
+            results.append("It is a Tie");
+        }
+        else if((playerChoice==0 && computerChoice==2) || (playerChoice==1 && computerChoice==0) || (playerChoice ==2 && computerChoice == 1)){
+            iUserWins++;
+
+        }
     }
 }
